@@ -3,12 +3,13 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require('axios');
 
 public_users.post("/register", (req,res) => {
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
-// Task 10: Get the book list available in the shop using async-await
+// Get the book list available in the shop
 public_users.get('/', async function (req, res) {
   try {
     const getBooks = new Promise((resolve) => {
@@ -21,7 +22,7 @@ public_users.get('/', async function (req, res) {
   }
 });
 
-// Task 11: Get book details based on ISBN using Promise
+// Get book details based on ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
   const isbn = req.params.isbn;
   const getBookByISBN = new Promise((resolve, reject) => {
@@ -39,7 +40,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
   });
 });
 
-// Task 12: Get book details based on author using async-await
+// Get book details based on author
 public_users.get('/author/:author', async function (req, res) {
   try {
       const author = req.params.author;
@@ -60,7 +61,7 @@ public_users.get('/author/:author', async function (req, res) {
   }
 });
 
-// Task 13: Get all books based on title using Promise
+// Get all books based on title
 public_users.get('/title/:title', function (req, res) {
   const title = req.params.title;
   const getBooksByTitle = new Promise((resolve) => {
@@ -90,3 +91,45 @@ public_users.get('/review/:isbn',function (req, res) {
 });
 
 module.exports.general = public_users;
+
+// ==========================================
+// AXIOS CODE CHO TASKS 10-13 (Bắt buộc phải có cho Câu 11)
+// ==========================================
+const baseURL = 'http://localhost:5000';
+
+// Task 10: Get all books using Async/Await and Axios
+async function getAllBooksAxios() {
+    try {
+        const response = await axios.get(`${baseURL}/`);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Task 11: Get book by ISBN using Promise and Axios
+function getBookByISBNAxios(isbn) {
+    axios.get(`${baseURL}/isbn/${isbn}`)
+        .then(response => console.log(response.data))
+        .catch(error => console.error(error));
+}
+
+// Task 12: Get book by Author using Async/Await and Axios
+async function getBookByAuthorAxios(author) {
+    try {
+        const response = await axios.get(`${baseURL}/author/${author}`);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Task 13: Get book by Title using Async/Await and Axios
+async function getBookByTitleAxios(title) {
+    try {
+        const response = await axios.get(`${baseURL}/title/${title}`);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}
